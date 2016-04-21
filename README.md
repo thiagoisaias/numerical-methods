@@ -6,6 +6,9 @@
 
 * Newton Cotes
 * Gauss Legendre
+* Gauss Hermite
+* Gauss Laguerre
+* Gauss Chebyshev
 
 
 
