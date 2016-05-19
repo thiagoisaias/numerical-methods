@@ -16,7 +16,7 @@ O usuário deve ter a opção de escolher os polinômios de substituição (g(x)
 using namespace std;
 
 double mainFunction(double x){
-   return exp(x);
+   return 1/sqrt(x);
 }
 
 double grade5(float a, float b, double error){

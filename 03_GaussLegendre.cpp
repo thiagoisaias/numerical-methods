@@ -20,7 +20,7 @@ e o cálculo dos pesos associados aos pontos amostrais do item 2). */
 using namespace std;
 
 double mainFunction(double x){
-   return exp(x);
+   return pow(x,11);
 }
 
 double calcIntegral(float a, float b, double roots[], double weights[], int grade){
@@ -34,6 +34,28 @@ double calcIntegral(float a, float b, double roots[], double weights[], int grad
       integral = integral + mainFunction(x)*weights[j];
    }
    return 0.5*(b-a)*integral;
+}
+
+double grade6(float a, float b, double error){
+   double integral = 0; double aux = 0;
+   double alfa,delta;
+   int i; int n = 1;
+   double weights[6] = {0.1713244924,0.360761573,0.467913935,0.467913935,0.360761573,0.1713244924};
+   double roots[6] = {-0.9324695142,-0.6612093865,-0.2386191861,0.2386191861,0.6612093865,0.9324695142};
+   alfa = 1;
+
+   while(alfa > error){
+      aux = integral;
+      integral = 0;
+      delta = (b-a)/n;
+      for(i=0;i<n;i++){
+         integral = integral + calcIntegral(a + delta*i,a+delta*(i+1),roots,weights,6);
+      }
+      n = n*2;
+      alfa = abs(integral-aux)/aux;
+   }
+
+   return integral;
 }
 
 double grade5(float a, float b, double error){
@@ -176,6 +198,9 @@ int main(){
          break;
       case 5:
          cout << grade5(a,b,error) << "\n";
+         break;
+      case 6:
+         cout << grade6(a,b,error) << "\n";
          break;
       default:
          cout << "Metodo nao implementado\n";
