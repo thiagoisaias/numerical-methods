@@ -34,29 +34,26 @@ def file_matrix():
     return matrix
 
 def power_method(precision):
-    #matrix = np.array([[1,2,0],[-2,1,2],[1,3,1]], dtype=np.float64)
     matrix = file_matrix()
-    eigenvec = np.array([1,1,1] , dtype = np.float64)
-    auxvec = np.array([0,0,0], dtype = np.float64)
-    eigenvalue = 0
+    n = len(matrix)
+    eigenvec = np.ones((n), dtype = np.float64)
+    auxvec = np.zeros((n), dtype = np.float64)
+    domvec = np.ones((n), dtype = np.float64)
 
     while(verify_error(precision,eigenvec,auxvec)):
         auxvec = eigenvec
+        domvec = np.dot(matrix,eigenvec)
         eigenvec = np.dot(matrix,eigenvec)/euclidean_norm(np.dot(matrix,eigenvec))
 
     eigenvalue = rayleigh_quotient(matrix,eigenvec)
+    eigenvec = domvec/domvec[n-1]
 
     print '\nThe Dominant Eigenvalue is: '
     print eigenvalue
-    print 'An eigenvector associated with this eigenvalue: '
+    print '\nEigenvector: '
     print eigenvec
+    print '\n'
 
-    print '\nTesting\n'
-    print 'A.x'
-    print np.dot(matrix,eigenvec)
-    print "is equals to delta.x"
-    print np.dot(eigenvalue,eigenvec)
 
-#power_method()
 precision = input("Precision: ")
 power_method(precision)
