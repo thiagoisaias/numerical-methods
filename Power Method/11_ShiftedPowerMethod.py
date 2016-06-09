@@ -37,7 +37,11 @@ def file_matrix():
     matrix = [map(np.float64,line.split(',')) for line in f]
     return matrix
 
-def power_method(precision):
+def find_interval(matrix):
+    for i in range(len(matrix)):
+
+
+def shifted_method(precision):
     matrix = file_matrix()
     n = len(matrix)
     eigenvec = np.ones((n), dtype = np.float64)
@@ -45,9 +49,9 @@ def power_method(precision):
     domvec = np.ones((n), dtype = np.float64)
 
     while(verify_error(precision,eigenvec,auxvec)):
-        auxvec = eigenvec
-        domvec = np.dot(matrix,eigenvec)
-        eigenvec = np.dot(matrix,eigenvec)/euclidean_norm(np.dot(matrix,eigenvec))
+        #auxvec = eigenvec
+        #domvec = np.dot(matrix,eigenvec) A matrix usada sera (A - alfa*I)
+        #Como escolher o alfa(shift)?
 
     eigenvalue = rayleigh_quotient(matrix,eigenvec)
     eigenvec = domvec/domvec[n-1]
@@ -60,4 +64,4 @@ def power_method(precision):
 
 
 precision = input("Precision: ")
-power_method(precision)
+shifted_method(precision)
