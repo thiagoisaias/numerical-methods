@@ -19,9 +19,11 @@ def rayleigh_quotient(matrix,eigenvector):
     return np.dot(aux,eigenvector) / np.dot(eigenvector,eigenvector)
 
 def verify_error(error,vector1,vector2): # True -> Stop False ->Continue
+    #aux = vector1 - vector2
+    #aux = np.power(aux,2)
     aux = np.absolute(vector1) - np.absolute(vector2)
     aux = np.absolute(aux)
-
+    
     for element in aux:
         if element > error:
             return True
