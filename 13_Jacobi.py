@@ -15,7 +15,7 @@ def euclidean_norm(vector):
     return math.sqrt(total)
 
 def file_matrix():
-    matrix = np.loadtxt('matrix.txt', dtype = np.float64, delimiter = ',')
+    matrix = np.loadtxt('matrix2.txt', dtype = np.float64, delimiter = ',')
     return matrix
 
 def verify_error(error,matrix): # True -> Continue False ->Stop
@@ -24,7 +24,7 @@ def verify_error(error,matrix): # True -> Continue False ->Stop
     for i in range(0,n):
         for j in range(0,n):
             if i!=j:
-                total += pow(matrix[i,j],2)
+                total += pow(matrix[i,j],2) #soma do quadrado dos elementos fora da diagonal principal
     if math.sqrt(total) > error:
         return True
     else:
@@ -45,6 +45,17 @@ def build(jj, ij, ii, i, j, n):
 
 	return R_matrix
 
+def process_eigenvectors(jacobimatrix,n):
+    #jacobimatrix[:,0] = jacobimatrix[:,0]/jacobimatrix[n-1,0]
+    #jacobimatrix[:,1] = jacobimatrix[:,1]/jacobimatrix[n-1,1]
+    #jacobimatrix[:,2] = jacobimatrix[:,2]/jacobimatrix[n-1,2]
+
+    #cada coluna da jacobimatrix é um autovetor da matrix original.
+    #essa funcao normaliza o vetor, dividindo a coluna pelo ultimo elemento
+    for i in range(n):
+        jacobimatrix[:,i] = jacobimatrix[:,i]/jacobimatrix[n-1,i]
+    return jacobimatrix
+
 def jacobi(error):
     matrix = file_matrix()
     n = len(matrix)
@@ -57,7 +68,8 @@ def jacobi(error):
             for i in range(j+1,n):
                 R = build(aux[j,j],aux[i,j],aux[i,i],i,j,n)
                 aux = R.T.dot(aux).dot(R) #J'AJ
-                J = J.dot(R.dot(J))
+                J = J.dot(R) #Acumular o produto das matrizes de rotacao para encontrar os autovetores
+
 
     print "Original Matrix: "
     print matrix
@@ -65,9 +77,11 @@ def jacobi(error):
     print "Jacobi Matrix"
     print J
     print "\n"
+    print "Normalized Eigenvectors"
+    print process_eigenvectors(J,n)
+    print "\n"
     print "Diagonal Matrix"
     print aux
-
 
 error = input("Precision: ")
 jacobi(error)
