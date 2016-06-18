@@ -1,4 +1,3 @@
-s
  # -*- coding: utf-8 -*-
 # Escreva e teste um programa que usa o método de Householder para transformar uma matriz simétrica A,
 # dada como entrada, em uma matriz TRIDIAGONAL.
@@ -15,44 +14,49 @@ def euclidean_norm(vector):
     return sqrt(total)
 
 def file_matrix():
-    f = open('matrix.txt','r')
-    matrix = np.array([], dtype = np.float64)
-    matrix = [map(np.float64,line.split(',')) for line in f]
+    matrix = np.loadtxt('matrix.txt', dtype = np.float64, delimiter = ',')
+    #matrix = [map(np.float64,line.split(',')) for line in f]
     return matrix
 
-def verify_error(error,vector1,vector2): # True -> Stop False ->Continue
-    #aux = vector1 - vector2
-    #aux = np.power(aux,2)
-    aux = np.absolute(vector1) - np.absolute(vector2)
-    aux = np.absolute(aux)
-
-    for element in aux:
-        if element > error:
-            return True
-    return False
-
 def householder(col,i,n):
-    vector = col[i+1:n]
-    cv = euclidean_norm(vector)
+    vector = col[i+1:] #ok
+    cv = euclidean_norm(vector) #ok
     nvector = vector
     if(vector[0]>0):
         nvector[0] = nvector[0] + cv
     else:
         nvector[0] = nvector[0] - cv
-    cn = euclidean_norm(nvector)
-    n = zeros(n)
+    cn = euclidean_norm(nvector) #ok
+    n_modified = nvector / cn #ok
+    nvector = np.append(np.zeros(i+1),n_modified) #ok
+    nvector = np.array([nvector]) #adding a new dimension (it is not possible to transpose a 1D array)
+    nvector = nvector.T #transformando em vetor vertical
 
-    return np.identity(n) - 2*np.dot(n,n.T)
+    return np.identity(n) - 2*np.dot(nvector,nvector.T)
 
 def tridiagonal_loop():
     matrix = file_matrix()
     n = len(matrix)
-    house_matrix = np.identity(4)
+    house_matrix = np.identity(n)
     aux = matrix
-    for i in range(0,n-3):
-        q_matrix = householder(aux[:,i],i,n)
+    #ok
+
+    print matrix[1,0]
+    
+    for i in range(0,n-2):
+        q_matrix = householder(aux[:,i],i,n) #ok
         house_matrix = np.dot(house_matrix,q_matrix)
-        aux = np.dot(np.dot(q_matrix,aux),q_matrix) #QAQ
-    return aux
+        aux = q_matrix.dot(aux).dot(q_matrix) #QAQ
+
+    print matrix[1,0]
+
+    print "Original Matrix: "
+    print matrix
+    print "\n"
+    print "Householder Matrix"
+    print house_matrix
+    print "\n"
+    print "Tridiagonal Matrix"
+    print aux
 
 tridiagonal_loop()
