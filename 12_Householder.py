@@ -19,16 +19,17 @@ def file_matrix():
     return matrix
 
 def householder(col,i,n):
-    vector = col[i+1:] #ok
-    cv = euclidean_norm(vector) #ok
+    vector = col[i+1:]
+    cv = euclidean_norm(vector)
     nvector = vector
     if(vector[0]>0):
         nvector[0] = nvector[0] + cv
     else:
         nvector[0] = nvector[0] - cv
-    cn = euclidean_norm(nvector) #ok
-    n_modified = nvector / cn #ok
-    nvector = np.append(np.zeros(i+1),n_modified) #ok
+    cn = euclidean_norm(nvector)
+    n_modified = nvector / cn
+    nvector = np.append(np.zeros(i+1),n_modified)
+
     nvector = np.array([nvector]) #adding a new dimension (it is not possible to transpose a 1D array)
     nvector = nvector.T #transformando em vetor vertical
 
@@ -39,19 +40,15 @@ def tridiagonal_loop():
     n = len(matrix)
     house_matrix = np.identity(n)
     aux = matrix
-    #ok
 
-    print matrix[1,0]
-    
     for i in range(0,n-2):
-        q_matrix = householder(aux[:,i],i,n) #ok
+        q_matrix = householder(aux[:,i],i,n)
         house_matrix = np.dot(house_matrix,q_matrix)
         aux = q_matrix.dot(aux).dot(q_matrix) #QAQ
 
-    print matrix[1,0]
-
+    return 0
     print "Original Matrix: "
-    print matrix
+    print file_matrix()
     print "\n"
     print "Householder Matrix"
     print house_matrix
@@ -59,4 +56,5 @@ def tridiagonal_loop():
     print "Tridiagonal Matrix"
     print aux
 
+np.set_printoptions(precision=4,suppress=True)
 tridiagonal_loop()
