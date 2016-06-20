@@ -15,7 +15,7 @@ def euclidean_norm(vector):
     return math.sqrt(total)
 
 def file_matrix():
-    matrix = np.loadtxt('matrix2.txt', dtype = np.float64, delimiter = ',')
+    matrix = np.loadtxt('./data/matrix.txt', dtype = np.float64, delimiter = ',')
     return matrix
 
 def verify_error(error,matrix): # True -> Continue False ->Stop

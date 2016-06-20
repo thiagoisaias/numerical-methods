@@ -15,7 +15,7 @@ def euclidean_norm(vector):
     return math.sqrt(total)
 
 def file_matrix():
-    matrix = np.loadtxt('matrix2.txt', dtype = np.float64, delimiter = ',')
+    matrix = np.loadtxt('./data/matrix.txt', dtype = np.float64, delimiter = ',')
     return matrix
 
 def verify_error(error,matrix): # True -> Continue False ->Stop
@@ -52,6 +52,9 @@ def process_eigenvectors(Q_matrix,n):
         Q_matrix[:,i] = Q_matrix[:,i]/Q_matrix[n-1,i]
     return Q_matrix
 
+#decompoe a matriz de entrada em um produto QR
+#Q é ortonormal e R é uma matriz triangular superior
+#Q.dot(R) == matrix(original)
 def qr_decomposition(matrix):
     n = len(matrix)
     Q = np.identity(n)
@@ -65,13 +68,6 @@ def qr_decomposition(matrix):
             Q = Q.dot(Q_modified)
             matrix = triangular_matrix
 
-    #print "Q"
-    #print Q
-    #print "R"
-    #print triangular_matrix
-    #print "QR"
-    #print Q.dot(triangular_matrix)
-
     return (Q,triangular_matrix)
 
 def transformation(error):
@@ -84,7 +80,7 @@ def transformation(error):
     while(verify_error(error,aux)):
         Q_modified,R = qr_decomposition(aux)
         aux = R.dot(Q_modified)
-        Q = Q.dot(Q_modified)
+        Q = Q.dot(Q_modified) #acumular o produto de Q para encontrar os autovetores
 
     print "Original Matrix: "
     print file_matrix()

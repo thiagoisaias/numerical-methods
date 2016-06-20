@@ -15,7 +15,7 @@ def euclidean_norm(vector):
     return math.sqrt(total)
 
 def file_matrix():
-    new_matrix = np.loadtxt('matrix.txt', dtype = np.float64, delimiter = ',')
+    new_matrix = np.loadtxt('./data/matrix.txt', dtype = np.float64, delimiter = ',')
     return new_matrix
 
 def householder(col,i,n):
