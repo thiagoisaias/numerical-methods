@@ -5,18 +5,18 @@
 # a matriz de entrada, a matriz tridiagonal e a matriz de Householder.
 
 import numpy as np
-from math import sqrt
+import math
+np.set_printoptions(precision=6,suppress=True)
 
 def euclidean_norm(vector):
     total = 0
     for component in vector:
         total += pow(component,2)
-    return sqrt(total)
+    return math.sqrt(total)
 
 def file_matrix():
-    matrix = np.loadtxt('matrix.txt', dtype = np.float64, delimiter = ',')
-    #matrix = [map(np.float64,line.split(',')) for line in f]
-    return matrix
+    new_matrix = np.loadtxt('matrix.txt', dtype = np.float64, delimiter = ',')
+    return new_matrix
 
 def householder(col,i,n):
     vector = col[i+1:]
@@ -26,29 +26,31 @@ def householder(col,i,n):
         nvector[0] = nvector[0] + cv
     else:
         nvector[0] = nvector[0] - cv
+
     cn = euclidean_norm(nvector)
     n_modified = nvector / cn
-    nvector = np.append(np.zeros(i+1),n_modified)
-
+    nvector = np.zeros(i+1)
+    nvector = np.append(nvector,n_modified)
     nvector = np.array([nvector]) #adding a new dimension (it is not possible to transpose a 1D array)
-    nvector = nvector.T #transformando em vetor vertical
+    nvector = nvector.T #transformando em vetor nx1
 
     return np.identity(n) - 2*np.dot(nvector,nvector.T)
 
-def tridiagonal_loop():
+def transformation():
     matrix = file_matrix()
     n = len(matrix)
     house_matrix = np.identity(n)
-    aux = matrix
+    aux = file_matrix()
 
     for i in range(0,n-2):
         q_matrix = householder(aux[:,i],i,n)
         house_matrix = np.dot(house_matrix,q_matrix)
-        aux = q_matrix.dot(aux).dot(q_matrix) #QAQ
+        aux = q_matrix.dot(np.dot(aux,q_matrix)) #QAQ
 
-    return 0
+    aux = house_matrix.T.dot(matrix).dot(house_matrix)
+
     print "Original Matrix: "
-    print file_matrix()
+    print matrix
     print "\n"
     print "Householder Matrix"
     print house_matrix
@@ -56,5 +58,4 @@ def tridiagonal_loop():
     print "Tridiagonal Matrix"
     print aux
 
-np.set_printoptions(precision=4,suppress=True)
-tridiagonal_loop()
+transformation()
