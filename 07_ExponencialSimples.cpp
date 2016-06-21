@@ -38,7 +38,7 @@ double midpoint(double a, double b, double error){
            integral = integral + delta*f(x)/(pow(cosh(s),2));
         }
         n = n*2;
-        alfa = abs(integral-aux);
+        alfa = sqrt(pow((integral-aux),2));
      }
 
    return 0.5*(b-a)*integral;
