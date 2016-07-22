@@ -23,14 +23,14 @@ def verify_error(error,vector1,vector2): # True -> Stop False ->Continue
     #aux = np.power(aux,2)
     aux = np.absolute(vector1) - np.absolute(vector2)
     aux = np.absolute(aux)
-    
+
     for element in aux:
         if element > error:
             return True
     return False
 
 def file_matrix():
-    f = open('matrix.txt','r')
+    f = open('./data/ap.txt','r')
     matrix = np.array([], dtype = np.float64)
     matrix = [map(np.float64,line.split(',')) for line in f]
     return matrix
@@ -48,7 +48,7 @@ def power_method(precision):
         eigenvec = np.dot(matrix,eigenvec)/euclidean_norm(np.dot(matrix,eigenvec))
 
     eigenvalue = rayleigh_quotient(matrix,eigenvec)
-    eigenvec = domvec/domvec[n-1]
+    #eigenvec = domvec/domvec[n-1]
 
     print '\nThe Dominant Eigenvalue is: '
     print eigenvalue

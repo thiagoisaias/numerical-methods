@@ -25,7 +25,7 @@ def verify_error(error,vector1,vector2): # True -> Stop False ->Continue
     return False
 
 def file_matrix():
-    f = open('matrix.txt','r')
+    f = open('./data/ap.txt','r')
     matrix = np.array([], dtype = np.float64)
     matrix = [map(np.float64,line.split(',')) for line in f]
     return matrix
@@ -43,7 +43,7 @@ def inverse_power_method(precision):
         eigenvec = np.dot(np.linalg.inv(matrix),eigenvec)/euclidean_norm(np.dot(np.linalg.inv(matrix),eigenvec))
 
     eigenvalue = rayleigh_quotient(matrix,eigenvec)
-    eigenvec = domvec/domvec[n-1]
+    #eigenvec = domvec/domvec[n-1]
 
     print '\nThe smallest Eigenvalue is: '
     print eigenvalue
